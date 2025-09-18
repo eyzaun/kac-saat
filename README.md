@@ -1,4 +1,4 @@
-# Kaç Saat Ulan Bu?
+# kac-saat
 
 Bu site, gelirinize göre bir eşya satın almak için kaç saat çalışmanız gerektiğini hesaplar.
 
