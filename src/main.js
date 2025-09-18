@@ -197,3 +197,36 @@ function recalc() {
 // Initial
 togglePrimAmountStates();
 recalc();
+
+// PWA: service worker registration
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(console.error);
+  });
+}
+
+// PWA: Android install prompt
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Optionally, show a custom install UI or button
+  const installBtnId = 'installBtn';
+  if (!document.getElementById(installBtnId)) {
+    const btn = document.createElement('button');
+    btn.id = installBtnId;
+    btn.textContent = 'Uygulamayı Yükle';
+    btn.style.marginTop = '0.75rem';
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome !== 'accepted') btn.disabled = false;
+      deferredPrompt = null;
+      btn.remove();
+    });
+    document.querySelector('.container')?.appendChild(btn);
+  }
+});
+
+// iOS note: Safari'de A2HS için kullanıcıya paylaş menüsünden “Ana Ekrana Ekle” yönergesi gösterilebilir.
