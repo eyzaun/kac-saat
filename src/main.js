@@ -5,6 +5,7 @@ const app = document.querySelector('#app');
 app.innerHTML = `
   <div class="container" role="application" aria-label="Kaç Saat Hesaplayıcı">
     <h1>Kaç Saat Ulan Bu?</h1>
+    <button id="installBtn" class="install-btn" hidden>Yükle</button>
     <form id="calcForm" novalidate>
       <label for="salary">Aylık Maaş (TL):</label>
       <input type="number" id="salary" placeholder="Örneğin: 5000" inputmode="decimal" min="0" step="0.01" required>
@@ -80,6 +81,7 @@ const quarterlyEl = qs('#quarterly');
 const yearlyEl = qs('#yearly');
 const primAmountQuarterlyEl = qs('#primAmountQuarterly');
 const primAmountYearlyEl = qs('#primAmountYearly');
+const installBtn = qs('#installBtn');
 
 // Prevent accidental form submit (Enter)
 formEl.addEventListener('submit', (e) => e.preventDefault());
@@ -198,35 +200,32 @@ function recalc() {
 togglePrimAmountStates();
 recalc();
 
-// PWA: service worker registration
+// PWA: Service Worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(console.error);
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
   });
 }
 
-// PWA: Android install prompt
+// PWA: Android install prompt handling
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  // Optionally, show a custom install UI or button
-  const installBtnId = 'installBtn';
-  if (!document.getElementById(installBtnId)) {
-    const btn = document.createElement('button');
-    btn.id = installBtnId;
-    btn.textContent = 'Uygulamayı Yükle';
-    btn.style.marginTop = '0.75rem';
-    btn.addEventListener('click', async () => {
-      btn.disabled = true;
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome !== 'accepted') btn.disabled = false;
-      deferredPrompt = null;
-      btn.remove();
-    });
-    document.querySelector('.container')?.appendChild(btn);
-  }
+  if (installBtn) installBtn.hidden = false;
+});
+
+installBtn?.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  installBtn.hidden = true;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice.catch(() => {});
+  deferredPrompt = null;
+});
+
+window.addEventListener('appinstalled', () => {
+  if (installBtn) installBtn.hidden = true;
+  deferredPrompt = null;
 });
 
 // iOS note: Safari'de A2HS için kullanıcıya paylaş menüsünden “Ana Ekrana Ekle” yönergesi gösterilebilir.
