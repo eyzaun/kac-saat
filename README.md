@@ -2,6 +2,7 @@
 
 Bu site, gelirinize göre bir eşya satın almak için kaç saat çalışmanız gerektiğini hesaplar.
 
+site url: https://kacsaat.web.app/
 ## Kurulum
 
 1. Bağımlılıkları yükleyin: `npm install`
