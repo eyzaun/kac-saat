@@ -16,6 +16,12 @@
 }
 
 :root {
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --fs-xxl: 2rem;     /* h1 */
+  --fs-lg: 1.05rem;   /* buttons */
+  --fs-md: 1rem;      /* body text, inputs */
+  --fs-sm: 0.95rem;   /* chips */
+  --fs-xs: 0.85rem;   /* captions */
   --bg-1: #0f0f0f;
   --bg-2: #1a1a1a;
   --panel: rgba(42, 42, 42, 0.9);
@@ -24,6 +30,9 @@
   --border: rgba(255, 255, 255, 0.1);
   --accent: #888;
 }
+
+/* Use border-box sizing to avoid overflow with padding */
+*, *::before, *::after { box-sizing: border-box; }
 
 /* Screen reader only */
 .sr-only {
@@ -39,7 +48,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--font-family);
   background: linear-gradient(-45deg, var(--bg-1), var(--bg-2), var(--bg-1), var(--bg-2));
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
@@ -50,12 +59,14 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  font-size: var(--fs-md);
 }
 
 /* Prevent horizontal scroll on small devices */
 html, body {
   max-width: 100%;
   overflow-x: hidden;
+  width: 100%;
 }
 
 .container {
@@ -64,18 +75,19 @@ html, body {
   padding: 3rem;
   border-radius: 16px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-  max-width: 640px;
-  width: min(100%, 640px);
+  width: 100%;
+  max-width: 640px; /* avoid min() for broader compatibility */
   border: 1px solid var(--border);
   animation: fadeIn 0.8s ease-out;
   box-sizing: border-box;
+  overflow: hidden; /* clip any inner overflow to avoid horizontal scroll */
 }
 
 h1 {
   text-align: center;
   margin-bottom: 2rem;
   color: var(--text);
-  font-size: 2rem;
+  font-size: var(--fs-xxl);
   font-weight: 300;
   animation: fadeIn 1s ease-out 0.2s both;
 }
@@ -87,23 +99,29 @@ form {
 }
 
 label {
+  display: block;
   margin-bottom: 0.25rem;
   font-weight: 500;
   color: var(--muted);
   transition: color 0.3s ease;
+  overflow-wrap: anywhere; /* wrap long labels on tiny screens */
+  font-size: var(--fs-md);
 }
 
-input[type="number"] {
+input[type="number"],
+input[type="text"] {
   padding: 0.9rem 1rem;
   border: 1px solid #555;
   border-radius: 8px;
   background-color: #3a3a3a;
   color: var(--text);
-  font-size: 1rem;
+  font-size: var(--fs-md);
   transition: all 0.2s ease;
   -webkit-appearance: none;
   -moz-appearance: textfield;
   appearance: none;
+  display: block;
+  width: 100%;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -122,6 +140,7 @@ input:focus-visible {
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 .days label {
@@ -135,6 +154,7 @@ input:focus-visible {
   transition: all 0.2s ease;
   cursor: pointer;
   user-select: none;
+  font-size: var(--fs-sm);
 }
 
 .days label:hover {
@@ -147,8 +167,10 @@ input:focus-visible {
 
 .prim-options {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
   margin-bottom: 0.25rem;
+  width: 100%;
 }
 
 .prim-options label {
@@ -156,20 +178,66 @@ input:focus-visible {
   align-items: center;
   gap: 0.5rem;
   font-weight: normal;
+  background-color: #444;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: var(--fs-sm);
 }
 
+.prim-options label:hover { background-color: #555; }
+
+.prim-options input[type="radio"] { accent-color: var(--accent); }
+
+/* Prim frequency behaves like day chips, not full-width */
 .prim-frequency {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
   margin-bottom: 0.5rem;
+  width: 100%;
 }
 
-.prim-frequency label {
+.prim-item {
   display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.chip-label {
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font-weight: normal;
+  background-color: #444;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: fit-content;
+  font-size: var(--fs-sm);
+}
+.chip-label:hover { background-color: #555; }
+
+.small-caption {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.prim-frequency label:hover { background-color: #555; }
+
+.prim-frequency input[type="checkbox"] { accent-color: var(--accent); }
+
+/* Make the numeric inputs in prim details not span full width in compact chip layout */
+#primDetails input[type="number"], #primDetails input[type="text"] {
+  width: 100%;
+}
+
+/* Compact mode: center the card even on mobile when only price+result are visible */
+body.compact-mode {
+  align-items: center;
+  justify-content: center;
 }
 
 button {
@@ -179,11 +247,12 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.05rem;
+  font-size: var(--fs-lg);
   font-weight: 500;
   transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
   position: relative;
   overflow: hidden;
+  max-width: 100%;
 }
 
 button:hover {
@@ -205,11 +274,14 @@ button:active {
   border-radius: 8px;
   border: 1px solid var(--border);
   transition: all 0.2s ease;
+  max-width: 100%;
 }
 
 #result p {
   margin: 0.35rem 0;
   animation: fadeIn 0.4s ease-out;
+  overflow-wrap: anywhere;
+  font-size: var(--fs-md);
 }
 
 #result strong {
@@ -231,11 +303,20 @@ button:active {
 }
 
 @media (max-width: 600px) {
+  body {
+    align-items: stretch; /* default layout for full form */
+    justify-content: flex-start;
+  }
+  /* Override in compact mode: keep centered */
+  body.compact-mode {
+    align-items: center;
+    justify-content: center;
+  }
   .container {
     padding: 1rem;
     max-width: 100%;
     width: 100%;
-    margin: 0.75rem;
+    margin: 0; /* avoid horizontal overflow from margins */
   }
 
   h1 {
@@ -255,14 +336,15 @@ button:active {
     gap: 0.45rem;
   }
 
-  .days label {
-    padding: 0.35rem 0.6rem;
-    font-size: 0.95rem;
-  }
+  .days label { padding: 0.35rem 0.6rem; font-size: var(--fs-sm); }
 
   .prim-options {
     gap: 0.6rem;
   }
+  .prim-options label { padding: 0.35rem 0.6rem; font-size: var(--fs-sm); }
+
+  .chip-label { padding: 0.35rem 0.6rem; font-size: var(--fs-sm); }
+  .prim-frequency { grid-template-columns: 1fr; }
 
   button {
     padding: 0.85rem;
@@ -273,3 +355,25 @@ button:active {
     padding: 0.9rem 1rem;
   }
 }
+
+/* View toggle */
+.view-toggle {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.view-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: normal;
+  background-color: #3a3a3a;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  white-space: normal; /* allow text to wrap on small screens */
+  max-width: 100%;
+}
+
+.view-toggle input[type="checkbox"] { accent-color: var(--accent); }

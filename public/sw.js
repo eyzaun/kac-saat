@@ -1,5 +1,5 @@
 // Basic service worker for offline caching
-const CACHE_NAME = 'kac-saat-cache-v1';
+const CACHE_NAME = 'kac-saat-cache-v8';
 const ASSETS = [
   '/',
   '/index.html'
