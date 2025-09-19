@@ -22,6 +22,13 @@
   --fs-md: 1rem;      /* body text, inputs */
   --fs-sm: 0.95rem;   /* chips */
   --fs-xs: 0.85rem;   /* captions */
+  /* Spacing scale (compact) */
+  --sp-xxs: 0.25rem;
+  --sp-xs: 0.4rem;
+  --sp-sm: 0.6rem;
+  --sp-md: 0.8rem;
+  --sp-lg: 1rem;
+  --sp-xl: 1.25rem;
   --bg-1: #0f0f0f;
   --bg-2: #1a1a1a;
   --panel: rgba(42, 42, 42, 0.9);
@@ -72,7 +79,7 @@ html, body {
 .container {
   background-color: var(--panel);
   backdrop-filter: blur(10px);
-  padding: 3rem;
+  padding: var(--sp-xl);
   border-radius: 16px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
   width: 100%;
@@ -85,7 +92,7 @@ html, body {
 
 h1 {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--sp-lg);
   color: var(--text);
   font-size: var(--fs-xxl);
   font-weight: 300;
@@ -95,12 +102,12 @@ h1 {
 form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: var(--sp-md);
 }
 
 label {
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--sp-xxs);
   font-weight: 500;
   color: var(--muted);
   transition: color 0.3s ease;
@@ -110,7 +117,7 @@ label {
 
 input[type="number"],
 input[type="text"] {
-  padding: 0.9rem 1rem;
+  padding: var(--sp-md) var(--sp-lg);
   border: 1px solid #555;
   border-radius: 8px;
   background-color: #3a3a3a;
@@ -138,18 +145,18 @@ input:focus-visible {
 .days {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 0.5rem;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-sm);
   width: 100%;
 }
 
 .days label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--sp-sm);
   font-weight: normal;
   background-color: #444;
-  padding: 0.5rem 0.9rem;
+  padding: var(--sp-sm) var(--sp-lg);
   border-radius: 6px;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -168,18 +175,18 @@ input:focus-visible {
 .prim-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 0.25rem;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-xxs);
   width: 100%;
 }
 
 .prim-options label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--sp-sm);
   font-weight: normal;
   background-color: #444;
-  padding: 0.5rem 0.9rem;
+  padding: var(--sp-sm) var(--sp-lg);
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -194,24 +201,24 @@ input:focus-visible {
 .prim-frequency {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
+  gap: var(--sp-md);
+  margin-bottom: var(--sp-sm);
   width: 100%;
 }
 
 .prim-item {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: var(--sp-xs);
 }
 
 .chip-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--sp-sm);
   font-weight: normal;
   background-color: #444;
-  padding: 0.5rem 0.9rem;
+  padding: var(--sp-sm) var(--sp-lg);
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -266,10 +273,10 @@ button:active {
 }
 
 #result {
-  margin-top: 1.25rem;
+  margin-top: var(--sp-xl);
   text-align: left;
   color: var(--text);
-  padding: 1rem 1.25rem;
+  padding: var(--sp-lg) var(--sp-xl);
   background-color: rgba(51, 51, 51, 0.8);
   border-radius: 8px;
   border: 1px solid var(--border);
@@ -278,7 +285,7 @@ button:active {
 }
 
 #result p {
-  margin: 0.35rem 0;
+  margin: var(--sp-xs) 0;
   animation: fadeIn 0.4s ease-out;
   overflow-wrap: anywhere;
   font-size: var(--fs-md);
@@ -289,8 +296,8 @@ button:active {
 }
 
 .install-btn {
-  margin-bottom: 0.75rem;
-  padding: 0.6rem 0.9rem;
+  margin-bottom: var(--sp-sm);
+  padding: var(--sp-sm) var(--sp-lg);
   border-radius: 8px;
   border: 1px solid var(--border);
   background: #2a2a2a;
@@ -313,7 +320,7 @@ button:active {
     justify-content: center;
   }
   .container {
-    padding: 1rem;
+    padding: var(--sp-lg);
     max-width: 100%;
     width: 100%;
     margin: 0; /* avoid horizontal overflow from margins */
@@ -325,22 +332,18 @@ button:active {
   }
 
   form {
-    gap: 0.9rem;
+    gap: var(--sp-sm);
   }
 
-  input {
-    padding: 0.7rem;
-  }
+  input { padding: var(--sp-md) var(--sp-lg); }
 
   .days {
-    gap: 0.45rem;
+    gap: var(--sp-xs);
   }
 
   .days label { padding: 0.35rem 0.6rem; font-size: var(--fs-sm); }
 
-  .prim-options {
-    gap: 0.6rem;
-  }
+  .prim-options { gap: var(--sp-sm); }
   .prim-options label { padding: 0.35rem 0.6rem; font-size: var(--fs-sm); }
 
   .chip-label { padding: 0.35rem 0.6rem; font-size: var(--fs-sm); }
@@ -351,26 +354,24 @@ button:active {
     font-size: 1rem;
   }
 
-  #result {
-    padding: 0.9rem 1rem;
-  }
+  #result { padding: var(--sp-md) var(--sp-lg); }
 }
 
 /* View toggle */
 .view-toggle {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--sp-sm);
   width: 100%;
 }
 
 .view-toggle label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--sp-sm);
   font-weight: normal;
   background-color: #3a3a3a;
-  padding: 0.4rem 0.7rem;
+  padding: var(--sp-xs) var(--sp-sm);
   border-radius: 6px;
   white-space: normal; /* allow text to wrap on small screens */
   max-width: 100%;
